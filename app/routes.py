@@ -31,14 +31,15 @@ def search(name):
     
     results = sp.search(q=str(name), type="album", limit=10)
     
-    print('\n\n')
-    print(results)
-    print('\n\n')
-
     temp = []
 
     for i, album in enumerate(results['albums']['items']):
-        print(' ', i, album['name'])
-        temp.append(album['name'])
+    
+        x = {
+            "name": album['name'],
+             "artist": album['artists'][0]['name']
+            }
+        
+        temp.append(x)
     
     return render_template('search.html', results=temp)
