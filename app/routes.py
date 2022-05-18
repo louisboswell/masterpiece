@@ -16,6 +16,7 @@ def index():
     playlists = sp.user_playlists('spotify')
     while playlists:
         for i, playlist in enumerate(playlists['items']):
+            
             print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'],  playlist['name']))
             results.append(playlist['name'])
         if playlists['next']:
@@ -24,3 +25,15 @@ def index():
             playlists = None
     
     return render_template('index.html', results=results)
+
+@app.route('/search/<name>')
+def search(name):
+    
+    results = sp.search(q=str(name), type="album", limit=10)
+    temp = []
+
+    for i, album in enumerate(results['albums']['items']):
+        print(' ', i, album['name'])
+        temp.append(album['name'])
+    
+    return render_template('search.html', results=temp)
