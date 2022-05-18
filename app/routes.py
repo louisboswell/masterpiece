@@ -3,15 +3,24 @@ from flask_sqlalchemy import model
 from app import app, db
 
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyClientCredentials
+
+auth_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(auth_manager=auth_manager)
 
 @app.route('/')
 def index():
     
-    scope = "user-library-read"
-
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-
-    results = sp.current_user_saved_tracks()
+    results = []
+    
+    playlists = sp.user_playlists('spotify')
+    while playlists:
+        for i, playlist in enumerate(playlists['items']):
+            print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'],  playlist['name']))
+            results.append(playlist['name'])
+        if playlists['next']:
+            playlists = sp.next(playlists)
+        else:
+            playlists = None
     
     return render_template('index.html', results=results)
