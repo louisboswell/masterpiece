@@ -14,10 +14,20 @@ def index():
     
     return render_template('index.html')
 
-@app.route('/search/<name>', methods=['POST', 'GET'])
-def search(name):
+@app.route('/discover/', methods=['GET', 'POST'])
+def discover():
     form = SearchForm()
     
+    if form.validate_on_submit() and form.query.data is not None:
+        return redirect(url_for('search', name=form.query.data))
+    
+    return render_template('discover.html', form=form)
+
+@app.route('/search/<name>', methods=['POST', 'GET'])
+def search(name):
+    
+    form = SearchForm()
+
     if form.validate_on_submit() and form.query.data is not None:
         return redirect(url_for('search', name=form.query.data))
     

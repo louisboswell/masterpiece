@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="flexbox mx-5 my-2">
+
+
+        <div class="flexbox mx-5 my-5">
+            <h1>Lets find some of your favorites</h1>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                    <div class="form-group">
+                    {{ form.query(class_ ="form-control")}}
+                    </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
