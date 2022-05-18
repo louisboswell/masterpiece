@@ -30,6 +30,11 @@ def index():
 def search(name):
     
     results = sp.search(q=str(name), type="album", limit=10)
+    
+    print('\n\n')
+    print(results)
+    print('\n\n')
+
     temp = []
 
     for i, album in enumerate(results['albums']['items']):
