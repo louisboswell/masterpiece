@@ -11,20 +11,7 @@ sp = spotipy.Spotify(auth_manager=auth_manager)
 @app.route('/')
 def index():
     
-    results = []
-    
-    playlists = sp.user_playlists('spotify')
-    while playlists:
-        for i, playlist in enumerate(playlists['items']):
-            
-            print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'],  playlist['name']))
-            results.append(playlist['name'])
-        if playlists['next']:
-            playlists = sp.next(playlists)
-        else:
-            playlists = None
-    
-    return render_template('index.html', results=results)
+    return render_template('index.html')
 
 @app.route('/search/<name>')
 def search(name):
@@ -37,9 +24,10 @@ def search(name):
     
         x = {
             "name": album['name'],
-             "artist": album['artists'][0]['name']
+            "artist": album['artists'][0]['name'],
+            "url": album['images'][0]['url']
             }
-        
+
         temp.append(x)
     
     return render_template('search.html', results=temp)
