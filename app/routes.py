@@ -18,7 +18,7 @@ def index():
 def search(name):
     form = SearchForm()
     
-    if form.validate_on_submit():
+    if form.validate_on_submit() and form.query.data is not None:
         return redirect(url_for('search', name=form.query.data))
     
     results = sp.search(q=str(name), type="album", limit=10)
