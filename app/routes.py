@@ -1,6 +1,7 @@
-from flask import render_template
+from flask import render_template, url_for, redirect
 from flask_sqlalchemy import model
 from app import app, db
+from app.forms import SearchForm
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -13,8 +14,12 @@ def index():
     
     return render_template('index.html')
 
-@app.route('/search/<name>')
+@app.route('/search/<name>', methods=['POST', 'GET'])
 def search(name):
+    form = SearchForm()
+    
+    if form.validate_on_submit():
+        return redirect(url_for('search', name=form.query.data))
     
     results = sp.search(q=str(name), type="album", limit=10)
     
@@ -30,4 +35,4 @@ def search(name):
 
         temp.append(x)
     
-    return render_template('search.html', results=temp)
+    return render_template('search.html', results=temp, form=form)

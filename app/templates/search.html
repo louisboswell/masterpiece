@@ -2,10 +2,15 @@
 
 {% block content %}
     <div class="flexbox mx-5 my-2">
-        <form>
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
                 <div class="form-group">
                   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search albums">
                 </div>
+
+            {{ form.query}}  
+            <input type="submit" class="btn" value="Search">
+
         </form>
 
     {% for album in results%}
